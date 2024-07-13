@@ -2,15 +2,13 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useDynamicContext } from "@dynamic-labs/sdk-react-core";
 import type { NextPage } from "next";
 import { BugAntIcon, MagnifyingGlassIcon } from "@heroicons/react/24/outline";
 import { Address } from "~~/components/scaffold-eth";
 import { sendTransaction, signMessage } from "~~/lib/dynamic";
 
-const Home: NextPage = () => {
-  const router = useRouter();
+const TokenStatus: NextPage = () => {
   const { primaryWallet, networkConfigurations } = useDynamicContext();
   const [messageSignature, setMessageSignature] = useState<string>("");
   const [transactionSignature, setTransactionSignature] = useState<string>("");
@@ -46,23 +44,6 @@ const Home: NextPage = () => {
     }
   };
 
-  const handleTextInput = async () => {
-    try {
-      const text = document.querySelector("input")?.value;
-      // if the text has 4 characters, it's a token ticker and we need to take the user to the tokenstatus.tsx page
-      // if the text has more than 4 characters, it's a URL and we need to take the user to the launch.tsx page
-      // we pass the text as
-      if (text?.length === 4) {
-        router.push("/tokenstatus/?ticker=" + text);
-      } else {
-        router.push("/launch/?url=" + text);
-      }
-      console.log(text);
-    } catch (e) {
-      console.error(e);
-    }
-  };
-
   return (
     <>
       <div className="flex items-center flex-col flex-grow pt-10">
@@ -91,11 +72,7 @@ const Home: NextPage = () => {
           {primaryWallet && transactionSignature && (
             <p className="text-center-text-lg">Transaction processed! {transactionSignature}</p>
           )}
-          <p className="text-center text-lg">Enter a token ticker or URL </p>
-          <input type="text" placeholder="Enter a token ticker or a social media URL..." className="text-input" />
-          <button onClick={() => handleTextInput()} className="btn btn-primary">
-            Confirm
-          </button>
+          <p className="text-center text-lg">Tokenstatus page </p>
         </div>
 
         <div className="flex-grow bg-base-300 w-full mt-16 px-8 py-12">
@@ -127,4 +104,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default TokenStatus;
